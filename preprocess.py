@@ -6,6 +6,9 @@ import snowballstemmer
 import numpy
 import re
 
+import nltk
+nltk.download('stopwords')
+
 # loading model from huggingface
 model = AutoModelForMaskedLM.from_pretrained("Shushant/nepaliBERT", output_hidden_states = True, return_dict = True, output_attentions = True)
 tokenizers = AutoTokenizer.from_pretrained("Shushant/nepaliBERT")

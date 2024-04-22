@@ -14,6 +14,8 @@ from preprocess import clean_text, get_bert_embedding_sentence
 if not os.path.exists("bert_model"):
     os.makedirs("bert_model")
 
+else:
+    pass
 
 # downloading and saving Nepali BERT model from huggingface    
 model = AutoModelForMaskedLM.from_pretrained("Shushant/nepaliBERT", output_hidden_states = True, return_dict = True, output_attentions = True)
