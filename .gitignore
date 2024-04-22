@@ -1,3 +1,4 @@
+bert_model/*
 **/__pycache__/
 driver/*
 try.py
@@ -5,4 +6,3 @@ nepaliBert.pkl
 .ipynb_checkpoints/twitter-checkpoint.ipynb
 chromedriver
 geckodriver.log
-.gitold

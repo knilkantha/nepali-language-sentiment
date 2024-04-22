@@ -1,3 +1,4 @@
+import os 
 from dataclasses import asdict
 from stat import FILE_ATTRIBUTE_NO_SCRUB_DATA
 import streamlit as st
@@ -21,28 +22,28 @@ from sklearn.preprocessing import StandardScaler
 from nepali_unicode_converter.convert import Converter
 from textblob import TextBlob
 
+if not os.path.exists("bert_model"):
+    os.makedirs("bert_model")
 
-# model = AutoModelForMaskedLM.from_pretrained("Shushant/nepaliBERT", output_hidden_states = True, return_dict = True, output_attentions = True)
 
-# tokenizers = AutoTokenizer.from_pretrained("Shushant/nepaliBERT")
-# pickle.dump(model, open('nepaliBert.pkl','wb'))
-# pickle.dump(tokenizers, open('tokenizers.pkl','wb'))
-model = pickle.load(open('bert_model/model','rb'))
-tokenizers = pickle.load(open('bert_model/tokenizer','rb'))
+# downloading and saving Nepali BERT model from huggingface    
+model = AutoModelForMaskedLM.from_pretrained("Shushant/nepaliBERT", output_hidden_states = True, return_dict = True, output_attentions = True)
+pickle.dump(model, open('bert_model/nepaliBert.pkl','wb'))
+
+# downloading and saving Nepali tokenizers 
+tokenizers = AutoTokenizer.from_pretrained("Shushant/nepaliBERT")
+pickle.dump(tokenizers, open('bert_model/tokenizers.pkl','wb'))
+
+
+# loading bert and tokenizers 
+model = pickle.load(open('bert_model/nepaliBert.pkl','rb'))
+tokenizers = pickle.load(open('bert_model/tokenizers.pkl','rb'))
 # if torch.cuda.is_available():  
 
-#     dev = "cuda:0" 
-# else:  
-
-#     dev = "cpu"  
-
-# print(dev)
 device = torch.device("cpu")  
 
 st.header("Nepali sentiment analysis")
 st.subheader("This app gives the sentiment analysis of Nepali text.")
-
-
 
 
 def get_bert_embedding_sentence(input_sentence):
@@ -67,8 +68,9 @@ def get_bert_embedding_sentence(input_sentence):
     sentence_embedding = torch.mean(token_vecs, dim=0)
 
     return sentence_embedding.numpy()
+
 lang_list = ["hi","ne","mr"]
-svc_sentiment = pickle.load(open('scv_sentiment','rb'))
+svc_sentiment = pickle.load(open('trained_model/scv_sentiment','rb'))
 text = st.text_input("Please input your nepali sentence here:")
 translator = Translator()
 converter = Converter()
